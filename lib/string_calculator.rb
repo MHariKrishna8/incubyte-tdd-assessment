@@ -4,6 +4,7 @@ class StringCalculator
   # {return} - Integer
   def self.add(string)
     return 0 if string.empty?
-    number = string.strip.to_i
+    numbers = string.strip.split(',').map(&:to_i)
+    numbers.sum
   end
 end
