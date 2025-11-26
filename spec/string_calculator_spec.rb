@@ -35,6 +35,10 @@ RSpec.describe StringCalculator do
       it 'raises an exception if the digits are not negative with custom delimiters' do
         expect { StringCalculator.add("//;\n-1;2") }.to raise_error(ArgumentError)
       end
+
+      it 'raises a single exception if multiple negative digits are provided' do
+        expect { StringCalculator.add("-1, -2") }.to raise_error(ArgumentError, "negative numbers not allowed (-1, -2)")
+      end
     end
   end
 end
