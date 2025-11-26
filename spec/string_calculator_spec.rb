@@ -45,6 +45,10 @@ RSpec.describe StringCalculator do
       it 'returns 0 if the string is nil' do
         expect(StringCalculator.add(nil)).to eq(0)
       end
+
+      it 'raises an exception if the input type is not string' do
+        expect { StringCalculator.add(1) }.to raise_error(ArgumentError)
+      end
     end
   end
 end
