@@ -23,9 +23,16 @@ class StringCalculator
     end
 
     pattern = Regexp.union(delimiters)
-    string.strip.split(pattern).map do |number|
-      raise ArgumentError, "negative numbers not allowed (#{number})" if number.to_i < 0
+    negatives = []
+    numbers = string.strip.split(pattern).map do |number|
+      negatives << number if number.to_i < 0
       number.to_i
     end
+
+    if negatives.any?
+      raise ArgumentError, "negative numbers not allowed (#{negatives.join(',')})"
+    end
+
+    numbers
   end
 end
