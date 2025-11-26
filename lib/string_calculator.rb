@@ -11,10 +11,16 @@ class StringCalculator
   private
 
   def self.parse_numbers(string)
-    string.strip.split(delimiter_regex).map(&:to_i)
-  end
+    delimiters = [",", "\n"]
 
-  def self.delimiter_regex
-    /,|\n/
+    if string.start_with? "//"
+      custom_delimiter_string, string_rest = string.split("\n", 2)
+      custom_delimiter = custom_delimiter_string.chars.last
+      delimiters << custom_delimiter
+      string = string_rest
+    end
+
+    pattern = Regexp.union(delimiters)
+    string.strip.split(pattern).map(&:to_i)
   end
 end
