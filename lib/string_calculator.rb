@@ -3,7 +3,7 @@ class StringCalculator
   # {params} - String
   # {return} - Integer
   def self.add(string)
-    raise ArgumentError, "Invalid input class: #{string.class}" if string.class != String
+    validate_input(string)
     
     return 0 if string.strip.empty?
     
@@ -17,7 +17,9 @@ class StringCalculator
   # {return} - Array
   def self.parse_numbers(string)
     delimiters = [",", "\n"]
+    negatives = []
 
+    # Handle custom delimiters
     if string.start_with? "//"
       custom_delimiter_string, string_rest = string.split("\n", 2)
       raise ArgumentError, "Invalid input: missing digits string after delimiter declaration" if string_rest.nil?
@@ -28,7 +30,6 @@ class StringCalculator
     end
 
     pattern = Regexp.union(delimiters)
-    negatives = []
     numbers = string.strip.split(pattern).map do |number|
       number.strip!
       # Allow digits only
@@ -38,10 +39,15 @@ class StringCalculator
       number.to_i
     end
 
-    if negatives.any?
-      raise ArgumentError, "negative numbers not allowed (#{negatives.join(', ')})"
-    end
+    # Handle negative numbers
+    raise ArgumentError, "negative numbers not allowed (#{negatives.join(', ')})" if negatives.any?
 
     numbers
+  end
+
+  # {params} - String
+  # {return} - void
+  def self.validate_input(string)
+    raise ArgumentError, "Invalid input class: #{string.class}" if string.class != String
   end
 end
