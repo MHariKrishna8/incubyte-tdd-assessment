@@ -40,5 +40,11 @@ RSpec.describe StringCalculator do
         expect { StringCalculator.add("-1, -2") }.to raise_error(ArgumentError, "negative numbers not allowed (-1, -2)")
       end
     end
+
+    context 'edge cases' do
+      it 'returns 0 if the string is nil' do
+        expect(StringCalculator.add(nil)).to eq(0)
+      end
+    end
   end
 end
