@@ -17,7 +17,7 @@ class StringCalculator
   # {return} - Array
   def self.parse_numbers(string)
     delimiters = [",", "\n"]
-    negatives = []
+    negatives, non_digits = [], []
 
     # Handle custom delimiters
     if string.start_with? "//"
@@ -32,12 +32,14 @@ class StringCalculator
     pattern = Regexp.union(delimiters)
     numbers = string.strip.split(pattern).map do |number|
       number.strip!
-      # Allow digits only
-      raise ArgumentError, "Invalid input: #{number}" unless number =~ /\A-?\d+\z/
+      non_digits << number unless number =~ /\A-?\d+\z/ # Allow digits only
 
       negatives << number if number.to_i < 0
       number.to_i
     end
+
+    # Handle non-digits
+    raise ArgumentError, "Invalid input: (#{non_digits.join(', ')})" if non_digits.any?
 
     # Handle negative numbers
     raise ArgumentError, "negative numbers not allowed (#{negatives.join(', ')})" if negatives.any?

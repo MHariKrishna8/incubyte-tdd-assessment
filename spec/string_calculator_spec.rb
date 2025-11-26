@@ -51,7 +51,7 @@ RSpec.describe StringCalculator do
       end
 
       it 'raises an exception if the invalid integer types are present in the string' do
-        expect { StringCalculator.add("1, a") }.to raise_error(ArgumentError, 'Invalid input: a')
+        expect { StringCalculator.add("1, a") }.to raise_error(ArgumentError, 'Invalid input: (a)')
       end
 
       it 'raises an exception if multiple invalid integer types are present in the string' do
