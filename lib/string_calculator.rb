@@ -11,6 +11,10 @@ class StringCalculator
   private
 
   def self.parse_numbers(string)
-    string.strip.split(/,|\n/).map(&:to_i)
+    string.strip.split(delimiter_regex).map(&:to_i)
+  end
+
+  def self.delimiter_regex
+    /,|\n/
   end
 end
