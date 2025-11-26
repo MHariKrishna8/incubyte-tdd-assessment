@@ -14,5 +14,11 @@ RSpec.describe StringCalculator do
         expect(StringCalculator.add("1")).to eq(1)
       end
     end
+
+    context 'multiple digit string' do
+      it 'returns the sum of the digits' do
+        expect(StringCalculator.add("1, 2")).to eq(3) 
+      end
+    end
   end
 end
