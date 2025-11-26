@@ -57,6 +57,11 @@ RSpec.describe StringCalculator do
       it 'raises an exception if multiple invalid integer types are present in the string' do
         expect { StringCalculator.add("1, a, b") }.to raise_error(ArgumentError, 'Invalid input: (a, b)')
       end
+
+      # We can also have combination of test cases like 
+      # - single negative digits with custom delimiters
+      # - multiple negative digits with custom delimiters
+      # - multiple negative digits with multiple custom delimiters and so on. For time being we are ignoring this
     end
   end
 end

@@ -1,13 +1,14 @@
+# lib/string_calculator.rb
 class StringCalculator
 
   # {params} - String
   # {return} - Integer
-  def self.add(string)
-    validate_input(string)
+  def self.add(input)
+    validate!(input)
     
-    return 0 if string.strip.empty?
+    return 0 if input.strip.empty?
     
-    numbers = parse_numbers(string)
+    numbers = parse_numbers(input)
     numbers.sum
   end
 
@@ -17,7 +18,6 @@ class StringCalculator
   # {return} - Array
   def self.parse_numbers(string)
     delimiters = [",", "\n"]
-    negatives, non_digits = [], []
 
     # Handle custom delimiters
     if string.start_with? "//"
@@ -29,14 +29,24 @@ class StringCalculator
       string = string_rest
     end
 
+    # Construct regex pattern
     pattern = Regexp.union(delimiters)
-    numbers = string.strip.split(pattern).map do |number|
-      number.strip!
-      non_digits << number unless number =~ /\A-?\d+\z/ # Allow digits only
 
-      negatives << number if number.to_i < 0
-      number.to_i
-    end
+    negatives, non_digits = [], []
+    numbers = string.strip.split(pattern).map do |val|
+      val.to_s.strip!
+      next nil if val.empty? # Ignore empty strings that might come in trailing commas
+
+      # Allow digits only
+      unless val =~ /\A-?\d+\z/
+        non_digits << val  
+        next nil
+      end
+
+      number = val.to_i
+      negatives << number if number < 0
+      number
+    end.compact
 
     # Handle non-digits
     raise ArgumentError, "Invalid input: (#{non_digits.join(', ')})" if non_digits.any?
@@ -49,7 +59,9 @@ class StringCalculator
 
   # {params} - String
   # {return} - void
-  def self.validate_input(string)
-    raise ArgumentError, "Invalid input class: #{string.class}" if string.class != String
+  def self.validate!(input)
+    unless input.is_a?(String)
+      raise ArgumentError, "Invalid input class: #{input.class}"
+    end
   end
 end
