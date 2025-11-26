@@ -27,6 +27,10 @@ RSpec.describe StringCalculator do
       it 'returns the sum of the digits with custom delimiters' do
         expect(StringCalculator.add("//;\n1;2")).to eq(3)
       end
+
+      it 'raises an exception if the digits are negative' do
+        expect { StringCalculator.add("-1, 2") }.to raise_error(ArgumentError)
+      end
     end
   end
 end
